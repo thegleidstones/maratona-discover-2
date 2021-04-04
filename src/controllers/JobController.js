@@ -1,6 +1,6 @@
 const Job = require('../models/Job')
 const Profile = require('../models/Profile')
-const jobUtils = require('../utils/JobUtils')
+const JobUtils = require('../utils/JobUtils')
 
 module.exports = {
     create(req, res) {
@@ -27,26 +27,9 @@ module.exports = {
             return res.send('Job not found!')
         }
 
-        job.budget = jobUtils.calculateBudget(job, profile["value-hour"])
+        job.budget = JobUtils.calculateBudget(job, profile["value-hour"])
 
         return res.render('job-edit', { job })
-    },
-
-    index(req, res) {
-        const updatedJobs = Job.get().map((job) => {
-            const remaining = jobUtils.remainingDays(job)
-            const status = remaining <= 0 ? 'done' : 'progress'
-            const budget = jobUtils.calculateBudget(job, Profile.get()["value-hour"])
-    
-            return {
-                ...job,
-                remaining,
-                status,
-                budget
-            }
-        })
-
-        return res.render('index', { jobs: updatedJobs })
     },
 
     save(req, res) {
