@@ -1,4 +1,5 @@
 const Profile = require('../models/Profile')
+const JobUtils = require('../utils/JobUtils')
 
 module.exports = {
     async index(req, res) {
@@ -6,28 +7,14 @@ module.exports = {
     },
 
     async update(req, res) {
-        const data = req.body
-
-        // definir quantas semanas tem em um ano
-        const weeksPerYear = 52
-        // remover semanas de férias do ano, para buscar as semanas medias por mes
-        const weeksPerMonth = (weeksPerYear - data["vacation_per_year"]) / 12
-
-        // total de horas trabalhadas na semana
-        const weekTotalHours = data["hours_per_day"] * data["days_per_week"]
-
-        // horas trabalhadas no mês
-        const monthlyTotalHours = weekTotalHours * weeksPerMonth
-
-        // qual será o valor da minha hora?
-        const valueHour = data["monthly_budget"] / monthlyTotalHours
-
+        const valueHour = JobUtils.valueHour(req)
         const profile = await Profile.get()
 
         await Profile.update({
             ...profile,
             ...req.body,
-            "value_hour": valueHour
+            value_hour: valueHour,
+            updated_at: Date.now()
         })
 
         return res.redirect('/profile')
