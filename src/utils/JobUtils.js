@@ -15,5 +15,26 @@ module.exports =  {
         return dayDiff
     },
 
-    calculateBudget: (job, valueHour) => valueHour * job["total_hours"]
+    valueHour(req) {
+        const { vacation_per_year, hours_per_day, days_per_week, monthly_budget } = req.body
+
+        // definir quantas semanas tem em um ano
+        const weeksPerYear = 52
+
+        // remover semanas de férias do ano, para buscar as semanas medias por mes
+        const weeksPerMonth = (weeksPerYear - vacation_per_year) / 12
+
+        // total de horas trabalhadas na semana
+        const weekTotalHours = hours_per_day * days_per_week
+
+        // horas trabalhadas no mês
+        const monthlyTotalHours = weekTotalHours * weeksPerMonth
+
+        // qual será o valor da minha hora?
+        const valueHour = monthly_budget / monthlyTotalHours
+
+        return valueHour
+    },
+
+    calculateBudget: (job, valueHour) => valueHour * job.total_hours
 }
