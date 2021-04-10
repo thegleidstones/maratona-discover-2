@@ -38,7 +38,7 @@ label {
   margin-bottom: 1rem;
 }
 
-input {
+input, select {
   font-family: IBM Plex Sans;
   font-weight: 500;
 
