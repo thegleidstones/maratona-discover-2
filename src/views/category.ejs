@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/styles/partials/cards.css" />
     <link rel="stylesheet" href="/styles/partials/buttons.css" />
     <link rel="stylesheet" href="/styles/partials/forms.css" />
+    <link rel="stylesheet" href="/styles/partials/modal.css">
     <link rel="stylesheet" href="/styles/partials/animations.css" />
     <link rel="stylesheet" href="/styles/pages/category.css" />
 
@@ -21,7 +22,7 @@
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    
+    <script src="/scripts/category.js" defer type="module"></script>
   </head>
   <body id="page-category">
 
@@ -59,18 +60,19 @@
       </main>
 
       <aside class="card">
+        <h2>Categorias Cadastradas</h2>
         <table>
           <thead>
             <tr>
               <th>Id</th>
               <th>Nome da categoria</th>
-              <th>Alterar</th>
+              <th>Editar</th>
               <th>Excluir</th>
             </tr>
           </thead>
           <tbody>
             <% categories.forEach(category => { %>
-              <tr>
+              <tr data-id="<%= category.id %> ">
                 <td><%= category.id %> </td>
                 <td><%= category.name %> </td>
                 <td>
@@ -91,10 +93,33 @@
           </tbody>
         </table>
       </aside>
-
-      
     </div>
     <!-- end container -->
+
+    <div class="modal-wrapper">
+      <div class="modal">
+        <img src="/images/trash-48.svg" alt="Excluir categoria" title="Excluir categoria" />
+        <h3>Excluir categoria</h3>
+        <p>Quer mesmo excluir essa categoria? <br/>
+        Ele será apagado para sempre.  
+        </p>
+        <footer>
+          <a 
+            class="button gray" 
+            href="#">Cancelar</a>
+          <button
+            class="button red"
+            type="submit"
+            form="delete-category">Excluir categoria</button>
+        </footer>
+      </div>
+      <form 
+        method="post" 
+        action="/category/delete/"
+        id="delete-category">
+      </form>
+    </div>
+    <!-- end modal-wrapper -->
   </body>
 </html>
  
