@@ -1,10 +1,13 @@
+const Category = require('../models/Category')
 const Job = require('../models/Job')
 const Profile = require('../models/Profile')
 const JobUtils = require('../utils/JobUtils')
 
 module.exports = {
-    create(req, res) {
-        return res.render('job')
+    async create(req, res) {
+        const categories = await Category.get()
+        
+        return res.render('job', { categories })
     },
 
     async delete(req, res) {
@@ -15,9 +18,9 @@ module.exports = {
         return res.redirect('/')
     },
 
-    
     async edit(req, res) {
         const { id } = req.params
+        const categories = await Category.get()
         const jobs = await Job.get()
         const profile = await Profile.get()
 
@@ -27,17 +30,30 @@ module.exports = {
             return res.send('Job not found!')
         }
 
-        job.budget = JobUtils.calculateBudget(job, profile["value_hour"])
+        job.budget = JobUtils.calculateBudget(job, profile.value_hour)
 
-        return res.render('job-edit', { job })
+        console.log(job)
+
+        return res.render('job-edit', { job, categories })
     },
 
     async save(req, res) {
+        const { category_id, name, daily_hours, total_hours } = req.body
+
+        if (category_id.trim() === 0 ||
+            name.trim() === '' ||
+            daily_hours.trim() === '' ||
+            total_hours.trim() === '') {
+            return res.send('Por favor, preencha os campos para salvar o Job')
+        }
+
         await Job.create({
-            name: req.body.name,
-            daily_hours: req.body.daily_hours,
-            total_hours: req.body.total_hours,
-            created_at: Date.now()
+            category_id,
+            name,
+            daily_hours,
+            total_hours,
+            created_at: Date.now(),
+            updated_at: Date.now()
         })
 
         return res.redirect('/')
@@ -45,15 +61,16 @@ module.exports = {
 
     async update(req, res) {
         const { id } = req.params
+        const { category_id, name, daily_hours, total_hours } = req.body
 
-        const job = {
-            id, 
-            name: req.body.name,
-            total_hours: req.body.total_hours,
-            daily_hours: req.body.daily_hours,
-        }
- 
-        await Job.update(job)
+        await Job.update({
+            id,
+            category_id, 
+            name,
+            daily_hours,
+            total_hours,
+            updated_at: Date.now()
+        })
 
         res.redirect('/job/' + id)
     }
