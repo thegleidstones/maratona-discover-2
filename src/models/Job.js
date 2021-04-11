@@ -4,19 +4,25 @@ module.exports = {
     async create(job) {
         const db = await Database()
 
-        await db.run(`
-            INSERT INTO jobs (
+        console.log("Job Model create: ", job)
+
+        await db.run(
+            `INSERT INTO jobs (
+                category_id,
                 name,
                 daily_hours,
                 total_hours,
-                created_at
+                created_at,
+                updated_at
             ) VALUES (
+                ${job.category_id},
                 "${job.name}",
                 ${job.daily_hours},
                 ${job.total_hours},
-                ${job.created_at}
-            );
-        `)
+                ${job.created_at},
+                ${job.updated_at}
+            );`
+        )
 
         await db.close()
     },
@@ -42,13 +48,15 @@ module.exports = {
     async update(job) {
         const db = await Database()
 
-        await db.run(`
-            UPDATE jobs SET
-            name = "${job.name}",
-            daily_hours = ${job.daily_hours},
-            total_hours = ${job.total_hours}
-            WHERE id = ${job.id}
-        `)
+        await db.run(
+            `UPDATE jobs SET
+                category_id = ${job.category_id},
+                name = "${job.name}",
+                daily_hours = ${job.daily_hours},
+                total_hours = ${job.total_hours},
+                updated_at = ${job.updated_at}
+            WHERE id = ${job.id}`
+        )
 
         await db.close()
     }
