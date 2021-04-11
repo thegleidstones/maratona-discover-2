@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#41414C" />
+    <link rel="shortcut icon" href="/images/favicon.png" type="image/png" />
+    <title>JobsCalc</title>
+
+    <link rel="stylesheet" href="/styles/main.css" />
+    <link rel="stylesheet" href="/styles/partials/page-header.css" />
+    <link rel="stylesheet" href="/styles/partials/cards.css" />
+    <link rel="stylesheet" href="/styles/partials/buttons.css" />
+    <link rel="stylesheet" href="/styles/partials/forms.css" />
+    <link rel="stylesheet" href="/styles/partials/animations.css" />
+    <link rel="stylesheet" href="/styles/pages/category.css" />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    
+  </head>
+  <body id="page-category">
+
+    <%- include('parts/page-header', {title: 'Adicionar nova categoria'}) %> 
+
+    <div class="container flex animate-up delay-2">
+      <main>
+        <form id="form-category" action="/category" method="POST">
+          <fieldset>
+            <legend>Dados da categoria</legend>
+            <div class="separator light"></div>
+
+            <div class="input-wrapper">
+              <label for="name">Nome da Categoria</label>
+              <input type="text" id="name" name="name" />
+            </div>
+            
+            <div class="button-group">
+              <button 
+                class="button green" 
+                form="form-category" 
+                type="submit" 
+                title="Salvar Dados">Salvar</button>
+              <a 
+                href="/" 
+                class="button gray">
+                <img 
+                  src="./images/trash-24.svg" 
+                  alt="Cancelar cadastro" 
+                  title="Cancelar cadastro">
+              </a>
+            </div>
+          </fieldset>    
+        </form>
+      </main>
+
+      <aside class="card">
+        <table>
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Nome da categoria</th>
+              <th>Alterar</th>
+              <th>Excluir</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% categories.forEach(category => { %>
+              <tr>
+                <td><%= category.id %> </td>
+                <td><%= category.name %> </td>
+                <td>
+                  <a 
+                    href="/category/<%= category.id %>" 
+                    class="button white edit" 
+                    title="Editar Categoria">
+                    <img src="/images/edit-24.svg" alt="Editar Categoria" />
+                  </a>
+                </td>
+                <td>
+                  <button class="delete button white" title="Excluir Categoria">
+                    <img src="/images/trash-24.svg" alt="Excluir Categoria" />
+                  </button>
+                </td>
+              </tr>
+            <% }) %> 
+          </tbody>
+        </table>
+      </aside>
+
+      
+    </div>
+    <!-- end container -->
+  </body>
+</html>
+ 
