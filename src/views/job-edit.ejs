@@ -36,14 +36,31 @@
             <legend>Dados do Job</legend>
             <div class="separator light"></div>
 
-            <div class="input-wrapper">
-              <label for="name">Nome do Job</label>
-              <input 
-                type="text" 
-                id="name" 
-                name="name"
-                value="<%= job.name %>"
-              />
+            <div class="input-group">
+              <div class="input-wrapper">
+                <label for="name">Nome do Job</label>
+                <input 
+                  type="text" 
+                  id="name" 
+                  name="name"
+                  value="<%= job.name %>"
+                />
+              </div>
+              <div class="input-wrapper">
+                <label for="category_id">Categoria do Job</label>
+                <select name="category_id" id="category_id">
+                  <option value="0">====== Selecione uma categoria ======</option>
+                  <% categories.forEach(category => { %>
+                    <option value="<%= category.id %>"
+                      <% if (category.id === job.category_id) { %>
+                        selected
+                      <% } %> 
+                    >
+                      <%= category.name %> 
+                    </option>
+                  <% }) %> 
+                </select>
+              </div>
             </div>
 
             <div class="input-group">
