@@ -9,6 +9,9 @@ routes.get('/', DashboardController.index)
 
 routes.get('/category', CategoryController.create)
 routes.post('/category', CategoryController.save)
+routes.get('/category/:id', CategoryController.edit)
+routes.post('/category/:id', CategoryController.update)
+routes.post('/category/delete/:id', CategoryController.delete)
 
 routes.get('/job', JobController.create)
 routes.post('/job', JobController.save)
