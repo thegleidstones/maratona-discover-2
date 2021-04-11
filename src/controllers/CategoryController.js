@@ -13,7 +13,7 @@ module.exports = {
 
         await Category.delete(id)
 
-        return res.redirect('/')
+        return res.redirect('/category')
     },
 
     async edit(req, res) {
@@ -25,7 +25,7 @@ module.exports = {
             return res.send('Category not found')
         }
 
-        return res.render('category-edit', { category })
+        return res.render('category-edit', { category, categories })
     },
 
     async save(req, res) {
