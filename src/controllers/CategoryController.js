@@ -2,8 +2,10 @@ const Category = require("../models/Category")
 const { update } = require("../models/Job")
 
 module.exports = {
-    create(req, res) {
-        return res.render('category')
+    async create(req, res) {
+        const categories = await Category.get()
+        
+        return res.render('category', { categories })
     },
 
     async delete(req, res) {
