@@ -1,5 +1,4 @@
 const Category = require("../models/Category")
-const { update } = require("../models/Job")
 
 module.exports = {
     async create(req, res) {
@@ -31,7 +30,9 @@ module.exports = {
     async save(req, res) {
         const { name } = req.body
 
-        console.log("requisição: ", name)
+        if (name.trim() === "") {
+            res.send('Por favor, preencha os dados para salvar a categoria')
+        }
 
         await Category.create({
             name,
