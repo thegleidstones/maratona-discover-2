@@ -4,6 +4,13 @@
   justify-content: space-between;
 }
 
+#logout {
+  margin-right: 0.5rem;
+  margin-top: 0.5rem;
+  text-align: right;
+  color: white;
+}
+
 #logo {
   width: 13rem;
   height: 3rem;
