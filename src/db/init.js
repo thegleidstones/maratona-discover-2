@@ -8,6 +8,8 @@ const initDB = {
         await db.exec(            
             `CREATE TABLE profile (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_name TEXT,
+                profile_url TEXT,
                 name TEXT,
                 avatar TEXT,
                 monthly_budget INT,
@@ -42,30 +44,6 @@ const initDB = {
                 ON UPDATE CASCADE
                 ON DELETE CASCADE 
             )`
-        )
-
-        await db.run(
-            `INSERT INTO profile (
-                name,
-                avatar,
-                monthly_budget,
-                hours_per_day,
-                days_per_week,
-                vacation_per_year,
-                value_hour,
-                created_at,
-                updated_at
-            ) VALUES (
-                "Gleidson Morais Silva",
-                "https://github.com/thegleidstones.png",
-                3000,
-                5,
-                5,
-                8,
-                75,
-                1617514376035,
-                1617514376035
-            );`
         )
 
         await db.run(
