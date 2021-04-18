@@ -1,14 +1,13 @@
 const Database = require('./config')
 
-
 const initDB = {
     async init() {
         const db = await Database()
 
         await db.exec(            
-            `CREATE TABLE profile (
+            `CREATE TABLE profiles (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                user_name TEXT,
+                user_name TEXT UNIQUE,
                 profile_url TEXT,
                 name TEXT,
                 avatar TEXT,
@@ -34,64 +33,16 @@ const initDB = {
         await db.exec(            
             `CREATE TABLE jobs (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
+                profile_id INTEGER,
                 category_id INTEGER,
                 name TEXT,
                 daily_hours INT,
                 total_hours INT,
                 created_at DATETIME,
                 updated_at DATETIME,
+                FOREIGN KEY (profile_id) REFERENCES profiles(id),
                 FOREIGN KEY (category_id) REFERENCES categories(id) 
-                ON UPDATE CASCADE
-                ON DELETE CASCADE 
             )`
-        )
-
-        await db.run(
-            `INSERT INTO categories (
-                name,
-                created_at,
-                updated_at
-            ) VALUES (
-                "Web Application",
-                1617514376035,
-                1617514376035
-            );`
-        )
-
-        await db.run(
-            `INSERT INTO jobs (
-                category_id,
-                name,
-                daily_hours,
-                total_hours,
-                created_at,
-                updated_at
-            ) VALUES (
-                1,
-                "Pizzaria Guloso",
-                4,
-                1,
-                1617514376018,
-                1617514376018
-            );`
-        )
-
-        await db.run(
-            `INSERT INTO jobs (
-                category_id,
-                name,
-                daily_hours,
-                total_hours,
-                created_at,
-                updated_at
-            ) VALUES (
-                1,
-                "Project OneTwo",
-                3,
-                75,
-                1617514376035,
-                1617514376035
-            );`
         )
 
         await db.close()
