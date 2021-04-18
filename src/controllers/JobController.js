@@ -22,8 +22,8 @@ module.exports = {
         const { id } = req.params
         const { username } = req.user
         const categories = await Category.get()
-        const jobs = await Job.get()
         const profile = await Profile.get(username)
+        const jobs = await Job.get(profile.id)
 
         const job = jobs.find( job => Number(job.id) === Number(id))
 
@@ -33,13 +33,13 @@ module.exports = {
 
         job.budget = JobUtils.calculateBudget(job, profile.value_hour)
 
-        console.log(job)
-
         return res.render('job-edit', { job, categories })
     },
 
     async save(req, res) {
         const { category_id, name, daily_hours, total_hours } = req.body
+        const { username } = req.user
+        const profile = await Profile.get(username)
 
         if (category_id.trim() === 0 ||
             name.trim() === '' ||
@@ -49,6 +49,7 @@ module.exports = {
         }
 
         await Job.create({
+            profile_id: profile.id,
             category_id,
             name,
             daily_hours,
