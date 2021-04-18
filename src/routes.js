@@ -1,11 +1,36 @@
 const express = require('express')
+const cookieSession = require('cookie-session')
+const passport = require('passport')
 const routes = express.Router()
-const ProfileController = require('./controllers/ProfileController')
-const JobController = require('./controllers/JobController')
-const DashboardController = require('./controllers/DashboardController')
-const CategoryController = require('./controllers/CategoryController')
+require('./auth/passport')
 
-routes.get('/', DashboardController.index)
+const auth = require('./middlewares/auth')
+const CategoryController = require('./controllers/CategoryController')
+const DashboardController = require('./controllers/DashboardController')
+const JobController = require('./controllers/JobController')
+const LoginController = require('./controllers/LoginController')
+const ProfileController = require('./controllers/ProfileController')
+
+routes.use(cookieSession({
+    name: 'github-auth-session',
+    keys: ['key1', 'key2']
+}))
+
+routes.use(passport.initialize())
+routes.use(passport.session())
+
+routes.get('/auth/error', (req, res) => res.send('Unknown Error'))
+routes.get('/auth/github', passport.authenticate('github', { scope: ['user:email'] }))
+routes.get('/github/callback', passport.authenticate('github', { failureRedirect: '/auth/error' }), (req, res) => {
+    res.redirect('/dashboard')
+})
+
+routes.get('/', LoginController.index)
+routes.get('/logout', LoginController.logout)
+
+routes.use(auth.isAuthenticated)
+
+routes.get('/dashboard', DashboardController.index)
 
 routes.get('/category', CategoryController.create)
 routes.post('/category', CategoryController.save)
