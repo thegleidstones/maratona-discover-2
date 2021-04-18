@@ -5,7 +5,7 @@ module.exports = {
         const db = await Database()
 
         await db.run(
-            `INSERT INTO profile (
+            `INSERT INTO profiles (
                 user_name,
                 profile_url,
                 name,
@@ -28,7 +28,7 @@ module.exports = {
     async get(user_name) {
         const db = await Database()
 
-        const data = await db.get(`SELECT * FROM profile WHERE user_name = "${user_name}"`)
+        const data = await db.get(`SELECT * FROM profiles WHERE user_name = "${user_name}"`)
 
         await db.close()
 
@@ -39,7 +39,7 @@ module.exports = {
         const db = await Database()
 
         db.run(
-            `UPDATE profile SET 
+            `UPDATE profiles SET 
                 monthly_budget = ${profile.monthly_budget},
                 hours_per_day = ${profile.hours_per_day},
                 days_per_week = ${profile.days_per_week},
