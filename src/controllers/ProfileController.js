@@ -1,4 +1,3 @@
-const { create } = require('../models/Job')
 const Profile = require('../models/Profile')
 const JobUtils = require('../utils/JobUtils')
 
@@ -12,16 +11,14 @@ module.exports = {
         const { username, profileUrl, displayName } = user
         const avatar = user.photos[0].value
 
-        const github_profile = {
+        await Profile.create({
             user_name: username,
             profile_url: profileUrl,
             name: displayName,
             avatar: avatar,
             created_at: Date.now(),
             updated_at: Date.now()
-        }
-
-        await Profile.create(github_profile)
+        })
     },
 
     async update(req, res) {
