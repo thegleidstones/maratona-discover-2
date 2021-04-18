@@ -4,10 +4,9 @@ module.exports = {
     async create(job) {
         const db = await Database()
 
-        console.log("Job Model create: ", job)
-
         await db.run(
             `INSERT INTO jobs (
+                profile_id,
                 category_id,
                 name,
                 daily_hours,
@@ -15,6 +14,7 @@ module.exports = {
                 created_at,
                 updated_at
             ) VALUES (
+                ${job.profile_id},
                 ${job.category_id},
                 "${job.name}",
                 ${job.daily_hours},
@@ -35,10 +35,10 @@ module.exports = {
         await db.close()
     },
 
-    async get() {
+    async get(profile_id) {
         const db = await Database()
 
-        const data = await db.all(`SELECT * FROM jobs`)
+        const data = await db.all(`SELECT * FROM jobs WHERE profile_id = ${profile_id}`)
 
         await db.close()
 
