@@ -19,9 +19,12 @@
   },
   "homepage": "https://github.com/thegleidstones/maratona-discover-2#readme",
   "dependencies": {
+    "cookie-session": "^1.4.0",
     "dotenv": "^8.2.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
+    "passport": "^0.4.1",
+    "passport-github2": "^0.1.12",
     "sqlite": "^4.0.21",
     "sqlite3": "^5.0.2"
   },
