@@ -39,7 +39,7 @@ module.exports = {
             updated_at: Date.now()
          })
 
-         res.redirect('/')
+         res.redirect('/dashboard')
     },
 
     async update(req, res) {
