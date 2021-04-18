@@ -15,14 +15,15 @@ module.exports = {
 
         await Job.delete(id)
 
-        return res.redirect('/')
+        return res.redirect('/dashboard')
     },
 
     async edit(req, res) {
         const { id } = req.params
+        const { username } = req.user
         const categories = await Category.get()
         const jobs = await Job.get()
-        const profile = await Profile.get()
+        const profile = await Profile.get(username)
 
         const job = jobs.find( job => Number(job.id) === Number(id))
 
@@ -56,7 +57,7 @@ module.exports = {
             updated_at: Date.now()
         })
 
-        return res.redirect('/')
+        return res.redirect('/dashboard')
     },
 
     async update(req, res) {
