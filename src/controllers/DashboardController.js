@@ -6,14 +6,15 @@ const ProfileController = require('./ProfileController')
 module.exports = {
     async index(req, res) {
         const { username } = req.user
-        const jobs = await Job.get()
         let profile = await Profile.get(req.user.username)
-
+        
         if (!profile) {
             await ProfileController.save(req.user)
             profile = await Profile.get(username)
         }
 
+        const jobs = await Job.get(profile.id)
+        
         let statusCount = {
             progress: 0,
             done: 0,
